@@ -1,19 +1,22 @@
 <template>
   <aside 
     :class="[
-      'bg-gray-100 w-64 transition-all duration-300 ease-in-out',
-      isOpen ? 'translate-x-0' : '-translate-x-full'
+      'bg-white transition-all duration-300 ease-in-out',
+      layoutStore.isSidebarOpen ? 'w-64' : 'w-20',
+      'z-40 shadow-lg border-r border-gray-200 sm:shadow-none pt-4'
     ]"
-    class="fixed h-[calc(100vh-4rem)] top-16 left-0 z-40 shadow-lg sm:shadow-none"
   >
-    <div class="p-2 sm:p-4">
+    <div class="sm:p-4 p-2">
       <nav class="space-y-1 sm:space-y-2">
-        <router-link :to="AppRoutes.PROJECTS" class="block p-2 hover:bg-gray-200 rounded text-sm sm:text-base">Proyectos</router-link>
-        <router-link :to="AppRoutes.USERS" class="block p-2 hover:bg-gray-200 rounded text-sm sm:text-base">Usuarios</router-link>
-        <router-link :to="AppRoutes.EVENTS" class="block p-2 hover:bg-gray-200 rounded text-sm sm:text-base">Eventos</router-link>
-        <router-link :to="AppRoutes.SEEDBEDS" class="block p-2 hover:bg-gray-200 rounded text-sm sm:text-base">Semilleros</router-link>
-        <router-link :to="AppRoutes.ACTIVITIES" class="block p-2 hover:bg-gray-200 rounded text-sm sm:text-base">Actividades</router-link>
-        <router-link :to="AppRoutes.REPORTS" class="block p-2 hover:bg-gray-200 rounded text-sm sm:text-base">Reportes</router-link>
+        <router-link
+          v-for="item in items"
+          :key="item.route"
+          :to="item.route"
+          class="btn-sidebar-item"
+        >
+          <component :is="item.icon" class="btn-sidebar-icon" />
+          <span v-if="layoutStore.isSidebarOpen">{{ item.label }}</span>
+        </router-link>
       </nav>
     </div>
   </aside>
@@ -21,8 +24,18 @@
 
 <script setup lang="ts">
 import { AppRoutes } from '@/router/routes.enum'
+import { FolderIcon, UserGroupIcon, CalendarIcon, AcademicCapIcon, ClipboardDocumentListIcon, ChartBarIcon, HomeIcon } from '@heroicons/vue/24/outline'
+import { useLayoutStore } from '@/stores/layout'
 
-defineProps<{
-  isOpen: boolean
-}>()
+const layoutStore = useLayoutStore()
+
+const items = [
+  { route: AppRoutes.HOME, label: 'Inicio', icon: HomeIcon },
+  { route: AppRoutes.PROJECTS, label: 'Proyectos', icon: FolderIcon },
+  { route: AppRoutes.USERS, label: 'Usuarios', icon: UserGroupIcon },
+  { route: AppRoutes.EVENTS, label: 'Eventos', icon: CalendarIcon },
+  { route: AppRoutes.SEEDBEDS, label: 'Semilleros', icon: AcademicCapIcon },
+  { route: AppRoutes.ACTIVITIES, label: 'Actividades', icon: ClipboardDocumentListIcon },
+  { route: AppRoutes.REPORTS, label: 'Reportes', icon: ChartBarIcon }
+]
 </script> 

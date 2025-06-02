@@ -1,1 +1,127 @@
 @import "tailwindcss";
+
+:root {
+  --color-primary: #145efc;
+  --color-primary-light: #145dfc1b;
+  --color-primary-dark: #2865e9;
+  --color-white: #ffffff;
+  --color-header-background: white;
+  --color-text-primary: #1e293b;
+  --rounded-lg: 0.5rem;
+  --spacing-6: 1.5rem;
+  --shadow-xl: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+  --font-family: 'Inter', sans-serif;
+}
+
+@layer components {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    background-color: var(--color-header-background);
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-6);
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-gray-200);
+  }
+
+  .btn-header-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .btn-header-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .btn-sidebar-item {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1rem;
+    height: 40px;
+    cursor: pointer;
+    padding: 1rem;
+    border-radius: var(--rounded-lg);
+  }
+
+  .btn-sidebar-item:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .btn-sidebar-item:hover .btn-sidebar-icon,
+  .router-link-active.btn-sidebar-item .btn-sidebar-icon {
+    color: var(--color-primary);
+  }
+
+  .router-link-active.btn-sidebar-item {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .btn-sidebar-icon {
+    background: transparent;
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    color: var(--color-text-primary);
+  }
+
+  .btn-primary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+    background-color: var(--color-primary);
+    border-radius: var(--rounded-lg);
+    padding: var(--spacing-6);
+    box-shadow: var(--shadow-xl);
+    color: var(--color-white);
+    font-family: var(--font-family);
+    font-weight: var(--font-light);
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-primary-dark);
+  }
+
+  .btn-primary:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .input-base {
+    font-weight: 300;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--color-gray-200);
+    font-size: 1rem;
+    transition: all 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

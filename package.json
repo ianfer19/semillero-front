@@ -9,12 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.1.8",
     "axios": "^1.9.0",
     "pinia": "^3.0.2",
     "tailwindcss": "^4.1.8",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-unicons": "^3.3.1"
   },
   "devDependencies": {
     "@types/node": "^22.15.29",
