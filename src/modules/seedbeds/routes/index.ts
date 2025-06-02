@@ -1,10 +1,11 @@
 import type { RouteRecordRaw } from 'vue-router'
-
+import { authGuard } from '@/router/guards/authGuard'
 const routes: RouteRecordRaw[] = [
   {
     path: '/seedbeds',
-    name: 'seedbeds',
-    component: () => import('@modules/seedbeds/views/SeedbedsExampleView.vue')
+    name: 'semilleros',
+    component: () => import('@modules/seedbeds/views/SeedbedsExampleView.vue'),
+    beforeEnter: authGuard
   }
 ]
 

@@ -10,6 +10,7 @@ interface User {
 export const useUsersStore = defineStore('users', {
   state: () => ({
     users: [] as User[],
+    user: null as User | null,
     loading: false,
     error: null as string | null
   }),
@@ -21,6 +22,9 @@ export const useUsersStore = defineStore('users', {
   },
 
   actions: {
+    setUser(user: User) {
+      this.user = user
+    },
     async fetchUsers() {
       this.loading = true
       this.error = null
