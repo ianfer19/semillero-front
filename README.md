@@ -1,81 +1,132 @@
-# 🚀 Vue 3 + TypeScript + Vite Project
+# 🚀 Proyecto Vue 3 + TypeScript + Vite
 
-## 📋 Prerequisites
+## 📋 Prerrequisitos
 
-Before you begin, ensure you have the following installed:
-- Node.js (version 16.x or higher) 📦
-- npm (comes with Node.js) or yarn 🧶
+Antes de comenzar, asegúrate de tener instalado:
+- Node.js (versión 16.x o superior) 📦
+- npm (viene con Node.js) o yarn 🧶
 - Git 🐙
 
-## 🛠️ Installation
+## 🛠️ Instalación
 
-1. Clone the repository
+1. Clonar el repositorio
 ```bash
 git clone https://github.com/Universidad-de-Cordoba-Colombia/dip-dw-2025-1.git
 cd dip-dw-2025-1
 ```
 
-2. Install dependencies
+2. Instalar dependencias
 ```bash
 npm install
-# or
+# o
 yarn install
 ```
 
-3. Environment Setup 🔐
-   - Copy the `.env.example` file to create your own `.env` file:
+3. Configuración del Entorno 🔐
+   - Copia el archivo `.env.example` para crear tu propio archivo `.env`:
    ```bash
    cp .env.example .env
    ```
-   - Open the `.env` file and fill in the required values for each environment variable
-   - ⚠️ Never commit your `.env` file to version control
+   - Abre el archivo `.env` y completa los valores requeridos para cada variable de entorno
+   - ⚠️ Nunca subas tu archivo `.env` al control de versiones
 
-4. Start the development server
+4. Iniciar el servidor de desarrollo
 ```bash
 npm run dev
-# or
+# o
 yarn dev
 ```
 
-## 🏗️ Project Structure
+## 🔄 Flujo de Trabajo con Git
+
+### Clonación y Configuración Inicial
+
+1. Al clonar el repositorio por primera vez:
+```bash
+git clone https://github.com/Universidad-de-Cordoba-Colombia/dip-dw-2025-1.git
+cd dip-dw-2025-1
+```
+
+2. Cambiar a la rama develop y actualizarla:
+```bash
+git checkout develop
+git pull origin develop
+```
+
+3. Crear y cambiar a tu rama de módulo:
+```bash
+git checkout -b nombre-de-tu-modulo
+```
+
+### Flujo de Trabajo Diario
+
+1. **SIEMPRE** antes de comenzar a trabajar:
+```bash
+git checkout develop
+git pull origin develop
+git checkout nombre-de-tu-modulo
+git merge develop
+```
+
+2. Realizar tus cambios y commits:
+```bash
+git add .
+git commit -m ":GITMOJI: [nombre-de-tu-rama]: descripción de tus cambios"
+```
+
+3. Antes de hacer push:
+```bash
+git checkout develop
+git pull origin develop
+git checkout nombre-de-tu-modulo
+git merge develop
+git push origin nombre-de-tu-modulo
+```
+
+⚠️ **IMPORTANTE**: 
+- NUNCA subas cambios sin antes hacer pull desde develop
+- Mantén tu rama de módulo actualizada con develop
+- Resuelve los conflictos en tu rama local antes de hacer push
+
+## 🏗️ Estructura del Proyecto
 
 ```
-├── src/               # Source files
-├── public/           # Static files
-├── .env.example      # Example environment variables
-└── package.json      # Project dependencies and scripts
+├── src/               # Archivos fuente
+├── public/           # Archivos estáticos
+├── .env.example      # Ejemplo de variables de entorno
+└── package.json      # Dependencias y scripts del proyecto
 ```
 
-## 📁 Detailed Project Architecture
+## 📁 Arquitectura Detallada del Proyecto
 
-### 🎯 Module Structure
-Each module in the application follows a consistent structure:
+### 🎯 Estructura de Módulos
+Cada módulo en la aplicación sigue una estructura consistente:
 
 ```
 src/
 ├── modules/
-│   ├── auth/                 # Authentication module example
-│   │   ├── components/      # Module-specific components
-│   │   ├── views/          # Module views/pages
-│   │   ├── store/          # Module-specific store
-│   │   │   ├── index.ts    # Store module definition
-│   │   │   └── types.ts    # Store types
-│   │   ├── router/         # Module-specific routes
-│   │   │   └── index.ts    # Route definitions
-│   │   ├── services/       # API services
-│   │   │   └── index.ts    # API calls
-│   │   └── types/          # Module-specific types
-│   └── [other-modules]/    # Other modules follow same structure
-├── router/                  # Main router configuration
-│   └── index.ts            # Routes registration
-└── store/                   # Main store configuration
-    └── index.ts            # Store registration
+│   ├── auth/                 # Ejemplo de módulo de autenticación
+│   │   ├── components/      # Componentes específicos del módulo
+│   │   ├── views/          # Vistas/páginas del módulo
+│   │   ├── store/          # Store específico del módulo
+│   │   │   ├── index.ts    # Definición del módulo store
+│   │   │   └── types.ts    # Tipos del store
+│   │   ├── router/         # Rutas específicas del módulo
+│   │   │   └── index.ts    # Definiciones de rutas
+│   │   ├── services/       # Servicios API
+│   │   │   └── index.ts    # Llamadas API
+│   │   └── types/          # Tipos específicos del módulo
+│   └── [otros-modulos]/    # Otros módulos siguen la misma estructura
+├── router/                  # Configuración del router principal
+│   └── index.ts            # Registro de rutas
+└── store/                   # Configuración del store principal
+    └── index.ts            # Registro del store
 ```
 
-### 🔄 Module Integration
+### 🔄 Integración de Módulos
 
-#### Router Integration
-Each module should define its own routes and then register them in the main router:
+#### Integración del Router
+Cada módulo debe definir sus propias rutas y luego registrarlas en el router principal:
 
 ```typescript
 // modules/auth/router/index.ts
@@ -102,12 +153,12 @@ import { authRoutes } from '@modules/auth/router'
 
 const routes = [
   authRoutes,
-  // other module routes...
+  // otras rutas de módulos...
 ]
 ```
 
-#### Store Integration
-Modules should have their own store slices that are registered in the main store:
+#### Integración del Store
+Los módulos deben tener sus propios slices del store que se registran en el store principal:
 
 ```typescript
 // modules/auth/store/index.ts
@@ -117,62 +168,62 @@ export const useAuthStore = defineStore('auth', {
   }),
   actions: {
     async login(credentials) {
-      // login logic
+      // lógica de login
     }
   }
 })
 
 // store/index.ts
 import { useAuthStore } from '@modules/auth/store'
-// Register other store modules...
+// Registrar otros módulos del store...
 ```
 
-### 🛠️ Module Layers
+### 🛠️ Capas del Módulo
 
-Each module should implement the following layers:
+Cada módulo debe implementar las siguientes capas:
 
-1. **Views Layer** (`views/`)
-   - Page components
-   - Layout components
-   - Handles user interaction
-   - Uses components and store
+1. **Capa de Vistas** (`views/`)
+   - Componentes de página
+   - Componentes de diseño
+   - Maneja la interacción del usuario
+   - Utiliza componentes y store
 
-2. **Components Layer** (`components/`)
-   - Reusable UI components
-   - Module-specific components
-   - Should be presentational when possible
+2. **Capa de Componentes** (`components/`)
+   - Componentes UI reutilizables
+   - Componentes específicos del módulo
+   - Deben ser presentacionales cuando sea posible
 
-3. **Store Layer** (`store/`)
-   - State management
-   - Actions and mutations
-   - Module-specific state logic
+3. **Capa de Store** (`store/`)
+   - Gestión de estado
+   - Acciones y mutaciones
+   - Lógica de estado específica del módulo
 
-4. **Services Layer** (`services/`)
-   - API calls
-   - External service integration
-   - Data fetching and manipulation
-   - Should be used by the store layer
+4. **Capa de Servicios** (`services/`)
+   - Llamadas API
+   - Integración con servicios externos
+   - Obtención y manipulación de datos
+   - Debe ser utilizada por la capa de store
 
-5. **Router Layer** (`router/`)
-   - Route definitions
-   - Navigation guards
-   - Route-specific logic
+5. **Capa de Router** (`router/`)
+   - Definiciones de rutas
+   - Guardias de navegación
+   - Lógica específica de rutas
 
-### 📝 Best Practices
+### 📝 Mejores Prácticas
 
-- Each module should be self-contained
-- Use TypeScript interfaces for type safety
-- Implement proper error handling in services
-- Keep components small and focused
-- Use composition API with `<script setup>`
-- Follow the single responsibility principle
+- Cada módulo debe ser autocontenido
+- Usar interfaces TypeScript para seguridad de tipos
+- Implementar manejo adecuado de errores en servicios
+- Mantener los componentes pequeños y enfocados
+- Usar Composition API con `<script setup>`
+- Seguir el principio de responsabilidad única
 
-## 🚀 Available Scripts
+## 🚀 Scripts Disponibles
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build locally
+- `npm run dev` - Iniciar servidor de desarrollo
+- `npm run build` - Construir para producción
+- `npm run preview` - Vista previa de la construcción de producción localmente
 
-## 📝 License
+## 📝 Licencia
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo LICENSE para más detalles.
