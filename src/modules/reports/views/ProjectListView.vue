@@ -9,7 +9,7 @@
   
         <div v-else class="project-card" v-for="project in projects" :key="project.id">
           <h3>{{ project.titulo }}</h3>
-          <p class="description">{{ project.descripcion }}</p>
+          <p class="description">Descripcion: {{ project.descripcion }}</p>
   
           <div class="info">
             <p><strong>Líder:</strong> {{ project.lider?.nombre || 'No asignado' }}</p>

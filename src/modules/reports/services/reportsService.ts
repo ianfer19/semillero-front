@@ -1,13 +1,15 @@
-import axios from 'axios'
-
-const API_URL = import.meta.env.VITE_API_URL
+import apiInstance from '@/@config/axios'
 
 export const reportsService = {
   /**
-   * Obtener todas las actividades de un evento (ajusté la ruta según backend)
+   * Obtener todas las actividades de un evento
    */
-  async getAllActivities(eventId) {
-    const response = await axios.get(`${API_URL}reports/events/${eventId}/activities`)
+  async getAllActivities(eventId: number) {
+    const response = await apiInstance.get(`/api/reports/events/${eventId}/activities`, {
+      headers: {
+        'X-Loading-Message': 'Cargando actividades del evento...'
+      }
+    })
     return response.data.actividades
   },
 
@@ -15,39 +17,59 @@ export const reportsService = {
    * Obtener proyectos con sus autores
    */
   async getProjectsWithAuthors() {
-    const response = await axios.get(`${API_URL}reports/projects/with-authors`)
+    const response = await apiInstance.get('/api/reports/projects/with-authors', {
+      headers: {
+        'X-Loading-Message': 'Cargando proyectos con autores...'
+      }
+    })
     return response.data.data
   },
 
   /**
-   * Obtener certificados emitidos (puedes añadir parámetros si quieres filtrar)
+   * Obtener certificados emitidos
    */
   async getCertificates() {
-    const response = await axios.get(`${API_URL}reports/certificates`)
+    const response = await apiInstance.get('/api/reports/certificates', {
+      headers: {
+        'X-Loading-Message': 'Cargando certificados...'
+      }
+    })
     return response.data.data
   },
 
   /**
-   * Generar certificado (POST) - requiere payload
+   * Generar certificado (requiere payload)
    */
-  async generateCertificate(payload) {
-    const response = await axios.post(`${API_URL}reports/certificates/generate`, payload)
+  async generateCertificate(payload: any) {
+    const response = await apiInstance.post('/api/reports/certificates/generate', payload, {
+      headers: {
+        'X-Loading-Message': 'Generando certificado...'
+      }
+    })
     return response.data
   },
 
   /**
    * Generar todos los certificados de un evento
    */
-  async generateCertificatesForEvent(eventId) {
-    const response = await axios.get(`${API_URL}reports/certificates/event/${eventId}/generate-all`)
+  async generateCertificatesForEvent(eventId: number) {
+    const response = await apiInstance.get(`/api/reports/certificates/event/${eventId}/generate-all`, {
+      headers: {
+        'X-Loading-Message': 'Generando certificados del evento...'
+      }
+    })
     return response.data
   },
 
   /**
    * Obtener reporte de un evento
    */
-  async getEventReport(eventId) {
-    const response = await axios.get(`${API_URL}reports/events/${eventId}/report`)
+  async getEventReport(eventId: number) {
+    const response = await apiInstance.get(`/api/reports/events/${eventId}/report`, {
+      headers: {
+        'X-Loading-Message': 'Cargando reporte del evento...'
+      }
+    })
     return response.data
   },
 
@@ -55,7 +77,11 @@ export const reportsService = {
    * Obtener puntajes de proyectos
    */
   async getProjectScores() {
-    const response = await axios.get(`${API_URL}reports/projects/scores`)
+    const response = await apiInstance.get('/api/reports/projects/scores', {
+      headers: {
+        'X-Loading-Message': 'Cargando puntajes de proyectos...'
+      }
+    })
     return response.data.data
   }
 }
