@@ -4,10 +4,10 @@ const API_URL = import.meta.env.VITE_API_URL
 
 export const reportsService = {
   /**
-   * Obtener todas las actividades
+   * Obtener todas las actividades de un evento (ajusté la ruta según backend)
    */
-  async getAllActivities() {
-    const response = await axios.get(`${API_URL}reports/activity`)
+  async getAllActivities(eventId) {
+    const response = await axios.get(`${API_URL}reports/events/${eventId}/activities`)
     return response.data.actividades
   },
 
@@ -15,20 +15,12 @@ export const reportsService = {
    * Obtener proyectos con sus autores
    */
   async getProjectsWithAuthors() {
-    const response = await axios.get(`${API_URL}reports/proyectos/autores`)
+    const response = await axios.get(`${API_URL}reports/projects/with-authors`)
     return response.data.data
   },
 
   /**
-   * Obtener inscritos
-   */
-  async getAttendees() {
-    const response = await axios.get(`${API_URL}reports/attendees`)
-    return response.data.data
-  },
-
-  /**
-   * Obtener certificados emitidos
+   * Obtener certificados emitidos (puedes añadir parámetros si quieres filtrar)
    */
   async getCertificates() {
     const response = await axios.get(`${API_URL}reports/certificates`)
@@ -36,10 +28,34 @@ export const reportsService = {
   },
 
   /**
-   * Obtener instituciones, facultades y programas
+   * Generar certificado (POST) - requiere payload
    */
-  async getInstitutions() {
-    const response = await axios.get(`${API_URL}reports/institutions`)
+  async generateCertificate(payload) {
+    const response = await axios.post(`${API_URL}reports/certificates/generate`, payload)
+    return response.data
+  },
+
+  /**
+   * Generar todos los certificados de un evento
+   */
+  async generateCertificatesForEvent(eventId) {
+    const response = await axios.get(`${API_URL}reports/certificates/event/${eventId}/generate-all`)
+    return response.data
+  },
+
+  /**
+   * Obtener reporte de un evento
+   */
+  async getEventReport(eventId) {
+    const response = await axios.get(`${API_URL}reports/events/${eventId}/report`)
+    return response.data
+  },
+
+  /**
+   * Obtener puntajes de proyectos
+   */
+  async getProjectScores() {
+    const response = await axios.get(`${API_URL}reports/projects/scores`)
     return response.data.data
   }
 }

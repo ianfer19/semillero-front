@@ -1,6 +1,6 @@
 <template>
     <BaseLayout>
-      <h2>Reporte de Instituciones</h2>
+      <h2>Reporte de semilleros</h2>
     </BaseLayout>
   </template>
   

@@ -42,7 +42,7 @@ const reportLinks = [
     path: '/reports/certificates',
   },
   {
-    title: 'Instituciones',
+    title: 'Semilleros',
     description: 'Consulta universidades, facultades y programas',
     path: '/reports/institutions',
   },
