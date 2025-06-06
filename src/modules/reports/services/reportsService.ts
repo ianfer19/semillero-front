@@ -70,7 +70,7 @@ export const reportsService = {
         'X-Loading-Message': 'Cargando reporte del evento...'
       }
     })
-    return response.data
+    return response.data.data
   },
 
   /**
@@ -83,5 +83,38 @@ export const reportsService = {
       }
     })
     return response.data.data
-  }
+  },
+
+  async getAllEvents() {
+    const response = await apiInstance.get('/api/events', {
+      headers: {
+        'X-Loading-Message': 'Cargando eventos...'
+      }
+    })
+    return response.data.data
+  },
+
+    /**
+   * Obtener estudiantes inscritos en eventos
+   */
+    async getEnrolledStudents() {
+      const response = await apiInstance.get('/api/reports/events/enrolled-students', {
+        headers: {
+          'X-Loading-Message': 'Cargando estudiantes inscritos...'
+        }
+      })
+      return response.data.data
+    },
+  
+    /**
+     * Obtener evaluadores con sus proyectos asignados
+     */
+    async getEvaluatorsWithProjects() {
+      const response = await apiInstance.get('/api/reports/projects/with-authors', {
+        headers: {
+          'X-Loading-Message': 'Cargando evaluadores y sus proyectos...'
+        }
+      })
+      return response.data.data
+    },
 }

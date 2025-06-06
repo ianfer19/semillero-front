@@ -2,34 +2,46 @@ import { defineStore } from 'pinia'
 import { reportsService } from '@/modules/reports/services/reportsService'
 
 interface Activity {
-  // Identificadores
-  actividad_id: number
-  actividad_titulo: string
-  descripcion: string
-  
-  // Fechas
-  fecha_inicio: string // ISO datetime string
-  fecha_fin: string // ISO datetime string
-  fecha_creacion: string // ISO datetime string
-  fecha_actualizacion: string // ISO datetime string
-  
-  // Estado
-  estado: 'en_progreso' | 'completada' | 'pendiente' | 'cancelada' // Enum de estados posibles
-  
-  // Relaciones (pueden ser null)
-  semillero_id: number | null
-  proyecto_id: number | null
-  evento_id: number | null
-  responsable_id: number
-  
-  // Información del responsable
-  responsable_nombre: string
-  responsable_correo: string
+  id: number
+  nombre: string
+  fecha: string
 }
+
 interface Project {
   id: number
   titulo: string
   autores: string[]
+}
+
+interface Evaluator {
+  evaluador: {
+    id: number
+    nombre: string
+    email: string
+  }
+  proyectos: {
+    id: number
+    titulo: string
+  }[]
+}
+
+interface EnrolledStudent {
+  estudiante: {
+    id: number
+    nombre: string
+    email: string
+  }
+  eventos: {
+    id: number
+    nombre: string
+    fecha_inicio: string
+    fecha_fin: string
+    proyecto: {
+      id: number
+      titulo: string
+    }
+    fecha_inscripcion: string
+  }[]
 }
 
 interface ReportsState {
@@ -37,9 +49,9 @@ interface ReportsState {
   error: string | null
   activities: Activity[]
   projects: Project[]
-  attendees: any[]
+  enrolledStudents: EnrolledStudent[]
+  evaluators: Evaluator[]
   certificates: any[]
-  institutions: any[]
 }
 
 export const useReportsStore = defineStore('reports', {
@@ -48,17 +60,17 @@ export const useReportsStore = defineStore('reports', {
     error: null,
     activities: [],
     projects: [],
-    attendees: [],
-    certificates: [],
-    institutions: []
+    enrolledStudents: [],
+    evaluators: [],
+    certificates: []
   }),
 
   actions: {
-    async fetchActivities() {
+    async fetchActivities(eventId: number) {
       this.isLoading = true
       this.error = null
       try {
-        this.activities = await reportsService.getAllActivities()
+        this.activities = await reportsService.getAllActivities(eventId)
       } catch (e: any) {
         this.error = e.message || 'Error al cargar actividades'
       } finally {
@@ -78,13 +90,25 @@ export const useReportsStore = defineStore('reports', {
       }
     },
 
-    async fetchAttendees() {
+    async fetchEnrolledStudents() {
       this.isLoading = true
       this.error = null
       try {
-        this.attendees = await reportsService.getAttendees()
+        this.enrolledStudents = await reportsService.getEnrolledStudents()
       } catch (e: any) {
-        this.error = e.message || 'Error al cargar inscritos'
+        this.error = e.message || 'Error al cargar estudiantes inscritos'
+      } finally {
+        this.isLoading = false
+      }
+    },
+
+    async fetchEvaluators() {
+      this.isLoading = true
+      this.error = null
+      try {
+        this.evaluators = await reportsService.getEvaluatorsWithProjects()
+      } catch (e: any) {
+        this.error = e.message || 'Error al cargar evaluadores'
       } finally {
         this.isLoading = false
       }
@@ -97,18 +121,6 @@ export const useReportsStore = defineStore('reports', {
         this.certificates = await reportsService.getCertificates()
       } catch (e: any) {
         this.error = e.message || 'Error al cargar certificados'
-      } finally {
-        this.isLoading = false
-      }
-    },
-
-    async fetchInstitutions() {
-      this.isLoading = true
-      this.error = null
-      try {
-        this.institutions = await reportsService.getInstitutions()
-      } catch (e: any) {
-        this.error = e.message || 'Error al cargar instituciones'
       } finally {
         this.isLoading = false
       }

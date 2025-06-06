@@ -62,7 +62,12 @@ const routes: RouteRecordRaw[] = [
     path: '/reports/institutions',
     name: 'reports-institutions',
     component: () => import('@/modules/reports/views/InstitutionsReport.vue'),
-  }
+  },
+  {
+    path: '/reports/projects/attendees',
+    name: 'inscritos-eventos y evaluadores',
+    component: () => import('@/modules/reports/views/AttendeesReport.vue'),
+  },
 ]
 
 export default routes
