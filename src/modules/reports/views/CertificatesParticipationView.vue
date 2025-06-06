@@ -2,6 +2,7 @@
   <BaseLayout>
     <h2 class="mb-6 text-2xl font-bold text-gray-800">Generación de Certificados</h2>
 
+    <!-- Selector de evento y participante -->
     <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-6">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
@@ -45,15 +46,18 @@
       </div>
     </div>
 
+    <!-- Indicador de carga -->
     <div v-if="loading" class="text-center py-8">
       <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mx-auto mb-2"></div>
       <p class="text-gray-600">Cargando información...</p>
     </div>
 
+    <!-- Error -->
     <div v-if="error" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
       <p>{{ error }}</p>
     </div>
 
+    <!-- Vista previa del certificado -->
     <div v-if="certificate && !loading" class="bg-white p-6 rounded-xl shadow border border-gray-100 max-w-4xl mx-auto">
       <div class="border-2 border-gray-200 p-8 rounded-lg mb-6">
         <div class="text-center mb-8">
@@ -94,6 +98,7 @@
         </div>
       </div>
 
+      <!-- Acciones -->
       <div class="flex justify-center gap-4">
         <button @click="downloadCertificate" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow transition flex items-center gap-2">
           <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -106,6 +111,7 @@
       </div>
     </div>
 
+    <!-- Mensaje cuando no hay certificado -->
     <div v-if="!certificate && !loading" class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-4 rounded">
       <p>Seleccione un evento y un participante para generar el certificado.</p>
     </div>
@@ -117,12 +123,12 @@ import { ref, onMounted } from 'vue'
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import { reportsService } from '@/modules/reports/services/reportsService'
 
-// Estados
+// Estado reactivo
 const loading = ref(false)
 const participantsLoading = ref(false)
 const error = ref('')
 const events = ref<Array<{id: number, name: string}>>([])
-const participants = ref<Array<{id: number, name: string, email: string}>>([])
+const participants = ref<Array<{id: number, name: string, email: string, raw?: any}>>([])
 const certificate = ref<any>(null)
 const selectedEventId = ref<number | null>(null)
 const selectedParticipantId = ref<number | null>(null)
@@ -131,16 +137,17 @@ const selectedParticipantId = ref<number | null>(null)
 const loadEvents = async () => {
   try {
     loading.value = true
-    const data = await reportsService.getEventReport(0) // Puedes reemplazar esto si tienes un servicio específico de eventos
+    const data = await reportsService.getEventReport(0)
     events.value = data?.events || []
   } catch (err) {
+    console.error(err)
     error.value = 'Error al cargar eventos.'
   } finally {
     loading.value = false
   }
 }
 
-// Cargar participantes del evento
+// Cargar participantes
 const loadParticipants = async () => {
   if (!selectedEventId.value) return
   try {
@@ -149,15 +156,19 @@ const loadParticipants = async () => {
 
     if (response?.data?.certificados) {
       participants.value = response.data.certificados.map((cert: any, index: number) => ({
-        id: index, // ID temporal si no hay uno real
+        id: index,
         name: cert.nombre_participante,
         email: cert.correo,
-        raw: cert // Guardamos el certificado completo por si se necesita después
+        raw: cert
       }))
     } else {
       participants.value = []
     }
+
+    selectedParticipantId.value = null
+    certificate.value = null
   } catch (err) {
+    console.error(err)
     error.value = 'Error al cargar participantes.'
     participants.value = []
   } finally {
@@ -165,17 +176,23 @@ const loadParticipants = async () => {
   }
 }
 
-// Cargar certificado de un participante
+// Generar un certificado específico
 const loadCertificate = async () => {
-  if (!selectedEventId.value || !selectedParticipantId.value) return
+  if (!selectedEventId.value || selectedParticipantId.value === null) return
   try {
     loading.value = true
-    const payload = {
-      event_id: selectedEventId.value,
-      participant_id: selectedParticipantId.value
+    const certRaw = participants.value[selectedParticipantId.value]?.raw
+    if (certRaw) {
+      certificate.value = certRaw
+    } else {
+      const payload = {
+        event_id: selectedEventId.value,
+        participant_id: selectedParticipantId.value
+      }
+      certificate.value = await reportsService.generateCertificate(payload)
     }
-    certificate.value = await reportsService.generateCertificate(payload)
   } catch (err) {
+    console.error(err)
     error.value = 'Error al generar el certificado.'
   } finally {
     loading.value = false
@@ -190,39 +207,43 @@ const generateAllCertificates = async () => {
     await reportsService.generateCertificatesForEvent(selectedEventId.value)
     alert('Certificados generados correctamente.')
   } catch (err) {
+    console.error(err)
     error.value = 'Error al generar los certificados del evento.'
   } finally {
     loading.value = false
   }
 }
 
-// Descargar el certificado (PDF base64 simulado)
+// Descargar PDF
 const downloadCertificate = () => {
-  if (!certificate.value || !certificate.value.pdf_base64) return
+  if (!certificate.value?.pdf_base64) return
   const link = document.createElement('a')
   link.href = `data:application/pdf;base64,${certificate.value.pdf_base64}`
   link.download = `certificado_${certificate.value.nombre_participante}.pdf`
   link.click()
 }
 
-// Simular envío por correo
+// Simulación de envío por correo
 const sendCertificateByEmail = async () => {
   try {
-    alert(`Correo enviado a ${certificate.value?.email || 'el participante'}`)
+    alert(`Correo enviado a ${certificate.value?.correo || 'el participante'}`)
   } catch (err) {
+    console.error(err)
     error.value = 'Error al enviar el correo.'
   }
 }
 
-// Formatear fecha
+// Formato de fecha
 const formatDate = (dateStr: string) => {
   if (!dateStr) return ''
   return new Date(dateStr).toLocaleDateString('es-ES', {
-    year: 'numeric', month: 'long', day: 'numeric'
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   })
 }
 
-// Inicialización
+// Al montar el componente
 onMounted(() => {
   loadEvents()
 })
