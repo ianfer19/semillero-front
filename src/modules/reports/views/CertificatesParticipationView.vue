@@ -145,10 +145,21 @@ const loadParticipants = async () => {
   if (!selectedEventId.value) return
   try {
     participantsLoading.value = true
-    const data = await reportsService.getAllActivities(selectedEventId.value)
-    participants.value = data?.participants || []
+    const response = await reportsService.generateCertificatesForEvent(selectedEventId.value)
+
+    if (response?.data?.certificados) {
+      participants.value = response.data.certificados.map((cert: any, index: number) => ({
+        id: index, // ID temporal si no hay uno real
+        name: cert.nombre_participante,
+        email: cert.correo,
+        raw: cert // Guardamos el certificado completo por si se necesita después
+      }))
+    } else {
+      participants.value = []
+    }
   } catch (err) {
     error.value = 'Error al cargar participantes.'
+    participants.value = []
   } finally {
     participantsLoading.value = false
   }
