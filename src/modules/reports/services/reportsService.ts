@@ -5,12 +5,12 @@ export const reportsService = {
    * Obtener todas las actividades de un evento
    */
   async getAllActivities(eventId: number) {
-    const response = await apiInstance.get(`/api/reports/events/${eventId}/activities`, {
+    const response = await apiInstance.get(`/api/reports/activities`, {
       headers: {
         'X-Loading-Message': 'Cargando actividades del evento...'
       }
     })
-    return response.data.actividades
+    return response.data.data
   },
 
   /**

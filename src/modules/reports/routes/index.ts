@@ -37,6 +37,27 @@ const routes: RouteRecordRaw[] = [
     name: 'reports-certificates',
     component: () => import('@/modules/reports/views/CertificatesReport.vue'),
   },
+  // Nuevas rutas para los certificados
+  {
+    path: '/reports/certificates/participation',
+    name: 'reports-certificates-participation',
+    component: () => import('@/modules/reports/views/CertificatesParticipationView.vue'),
+  },
+  {
+    path: '/reports/certificates/by-member',
+    name: 'reports-certificates-by-member',
+    component: () => import('@/modules/reports/views/CertificatesByMemberView.vue'),
+  },
+  {
+    path: '/reports/certificates/event-reports',
+    name: 'reports-certificates-event-reports',
+    component: () => import('@/modules/reports/views/CertificatesEventReportsView.vue'),
+  },
+  {
+    path: '/reports/certificates/project-grades',
+    name: 'reports-certificates-project-grades',
+    component: () => import('@/modules/reports/views/CertificatesProjectGradesView.vue'),
+  },
   {
     path: '/reports/institutions',
     name: 'reports-institutions',
@@ -45,3 +66,4 @@ const routes: RouteRecordRaw[] = [
 ]
 
 export default routes
+

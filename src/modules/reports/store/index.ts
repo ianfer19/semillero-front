@@ -2,12 +2,30 @@ import { defineStore } from 'pinia'
 import { reportsService } from '@/modules/reports/services/reportsService'
 
 interface Activity {
-  id: number
-  nombre: string
-  fecha: string
-  // agrega más campos según la estructura real
+  // Identificadores
+  actividad_id: number
+  actividad_titulo: string
+  descripcion: string
+  
+  // Fechas
+  fecha_inicio: string // ISO datetime string
+  fecha_fin: string // ISO datetime string
+  fecha_creacion: string // ISO datetime string
+  fecha_actualizacion: string // ISO datetime string
+  
+  // Estado
+  estado: 'en_progreso' | 'completada' | 'pendiente' | 'cancelada' // Enum de estados posibles
+  
+  // Relaciones (pueden ser null)
+  semillero_id: number | null
+  proyecto_id: number | null
+  evento_id: number | null
+  responsable_id: number
+  
+  // Información del responsable
+  responsable_nombre: string
+  responsable_correo: string
 }
-
 interface Project {
   id: number
   titulo: string
