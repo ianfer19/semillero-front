@@ -17,10 +17,19 @@
             <h3>Certificados de Calificación</h3>
             <p>Descarga certificados de calificación de proyectos por evento.</p>
           </router-link>
+
+          <router-link to="/reports/projects/attendees" class="menu-card">
+          <h3>Inscritos y evaluadores</h3>
+          <p>
+            Consulta inscritos y revisa el listado de evaluadores con su respectivo proyecto.
+          </p>
+        </router-link>
+
         </div>
       </section>
     </BaseLayout>
   </template>
+  
   
   <script setup lang="ts">
   import BaseLayout from '@/layouts/BaseLayout.vue'
