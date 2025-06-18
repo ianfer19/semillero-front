@@ -26,6 +26,30 @@ export const reportsService = {
   },
 
   /**
+   * Obtener estudiantes inscritos en eventos
+   */
+  async getEnrolledStudents() {
+    const response = await apiInstance.get('/api/reports/events/enrolled-students', {
+      headers: {
+        'X-Loading-Message': 'Cargando estudiantes inscritos...'
+      }
+    })
+    return response.data.data
+  },
+
+  /**
+   * Obtener evaluadores con sus proyectos asignados
+   */
+  async getEvaluatorsWithProjects() {
+    const response = await apiInstance.get('/api/reports/evaluators/with-projects', {
+      headers: {
+        'X-Loading-Message': 'Cargando evaluadores y sus proyectos...'
+      }
+    })
+    return response.data.data
+  },
+
+  /**
    * Obtener certificados emitidos
    */
   async getCertificates() {

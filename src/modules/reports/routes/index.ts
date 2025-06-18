@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/reports/attendees',
-    name: 'reports-attendees',
+    name: 'inscritos-eventos y evaluadores',
     component: () => import('@/modules/reports/views/AttendeesReport.vue'),
   },
   {

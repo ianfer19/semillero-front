@@ -7,11 +7,11 @@ export interface LoginPayload {
 
 export const login = async (payload: LoginPayload, loadingMessage?: string) => {
   const config = loadingMessage ? { headers: { 'X-Loading-Message': loadingMessage } } : {}
-  const response = await apiInstance.post('/auth/login', payload, config)
+  const response = await apiInstance.post('/api/auth/login', payload, config)
   return response.data
 }
 
 export const validateToken = async () => {
-  const response = await apiInstance.get('/auth/me')
+  const response = await apiInstance.get('/api/auth/me')
   return response.data
 } 

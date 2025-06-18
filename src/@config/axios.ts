@@ -49,4 +49,6 @@ apiInstance.interceptors.response.use(
   }
 )
 
+apiInstance.defaults.withCredentials = true
+
 export default apiInstance
